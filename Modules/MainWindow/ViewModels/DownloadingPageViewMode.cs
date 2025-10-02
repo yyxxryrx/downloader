@@ -1,0 +1,14 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Downloader.Modules.MainWindow.ViewModels
+{
+    public partial class DownloadingPageViewMode
+    {
+        public ObservableCollection<Modules.ViewModels.Downloader> Downloaders = [];
+    }
+}

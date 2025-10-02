@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<Page
+    x:Class="Downloader.Modules.MainWindow.Views.SettingsPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Downloader.Modules.MainWindow.Views"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:controls="using:CommunityToolkit.WinUI.Controls"
+    mc:Ignorable="d">
+
+    <Grid Margin="36">
+        <StackPanel Spacing="12">
+            <StackPanel Spacing="4">
+                <TextBlock x:Uid="LanguageLabel"
+                           Style="{StaticResource BodyStrongTextBlockStyle}" />
+                <controls:SettingsCard x:Uid="LanguageCard">
+                    <controls:SettingsCard.HeaderIcon>
+                        <FontIcon Glyph="&#xE775;" />
+                    </controls:SettingsCard.HeaderIcon>
+                    <ComboBox>
+                        <x:String>English</x:String>
+                        <x:String>中文（简体）</x:String>
+                    </ComboBox>
+                </controls:SettingsCard>
+            </StackPanel>
+        </StackPanel>
+    </Grid>
+</Page>

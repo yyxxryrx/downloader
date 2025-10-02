@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "Downloader (Package)": {
+      "commandName": "MsixPackage"
+    },
+    "Downloader (Unpackaged)": {
+      "commandName": "Project"
+    }
+  }
+}
