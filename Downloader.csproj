@@ -13,6 +13,8 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
   <ItemGroup>
+    <None Remove="Modules\AskWindow\AskWindow.xaml" />
+    <None Remove="Modules\AskWindow\Views\MainPage.xaml" />
     <None Remove="Modules\MainWindow\Views\DownloadingPage.xaml" />
     <None Remove="Modules\MainWindow\Views\HistoryPage.xaml" />
     <None Remove="Modules\MainWindow\Views\MainPage.xaml" />
@@ -45,6 +47,7 @@
     <PackageReference Include="CommunityToolkit.WinUI.Controls.SettingsControls" Version="8.2.250402" />
     <PackageReference Include="Microsoft.Windows.SDK.BuildTools" Version="10.0.26100.6584" />
     <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.8.250916003" />
+    <PackageReference Include="WinUIEx" Version="2.8.0" />
   </ItemGroup>
   <ItemGroup>
     <Page Update="Modules\MainWindow\Views\DownloadingPage.xaml">
@@ -58,6 +61,16 @@
   </ItemGroup>
   <ItemGroup>
     <Page Update="Modules\MainWindow\Views\MainPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="Modules\AskWindow\AskWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="Modules\AskWindow\Views\MainPage.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
