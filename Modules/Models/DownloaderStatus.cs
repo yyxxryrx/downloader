@@ -1,6 +1,6 @@
 ﻿namespace Downloader.Modules.Models;
 
-public enum DownloadStatue
+public enum DownloadStatus
 {
     Pending,
     Downloading,
@@ -8,4 +8,5 @@ public enum DownloadStatue
     Merging,
     Completed,
     Failed,
+    Canceled
 }
