@@ -1,4 +1,5 @@
 ﻿using System;
+using Windows.ApplicationModel.DataTransfer;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Downloader.Modules.MainWindow.Views;
@@ -44,9 +45,22 @@ namespace Downloader.Modules.MainWindow.ViewModels
                 dispatcherQueue.TryEnqueue(Show);
             return;
 
-            void Show()
+            async void Show()
             {
-                var askWindow = new AskWindow.AskWindow("https://dl.hdslb.com/mobile/fixed/bili_win/bili_win-install.exe?v=1.17.2-4&spm_id_from=..0.0");
+                var package = Clipboard.GetContent();
+                var url = "";
+                if (package.Contains(StandardDataFormats.Text))
+                {
+                    try
+                    {
+                        url = new Uri(await package.GetTextAsync()).AbsoluteUri;
+                    }
+                    catch
+                    {
+                        // ignored
+                    }
+                }
+                var askWindow = new AskWindow.AskWindow(url);
                 askWindow.Activate();
             }
         }

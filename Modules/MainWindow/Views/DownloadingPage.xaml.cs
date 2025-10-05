@@ -32,61 +32,24 @@ public sealed partial class DownloadingPage : Page
     {
         InitializeComponent();
         DataContext = new DownloadingPageViewMode();
-        ViewModel.Downloaders.Add(new Modules.ViewModels.Downloader("", "Test")
-        {
-            Chunks =
-            [
-                new ChunkDownloader
-                {
-                    Id = 0,
-                    Statue = DownloadStatue.Downloading,
-                    Progress = 50
-                },
-                new ChunkDownloader
-                {
-                    Id = 1,
-                    Statue = DownloadStatue.Downloading,
-                    Progress = 30
-                },
-                new ChunkDownloader
-                {
-                    Id = 2,
-                    Statue = DownloadStatue.Downloading,
-                    Progress = 40
-                },
-            ],
-            Statue = DownloadStatue.Downloading,
-            Progress = 20,
-            Speed = 100,
-        });
-        ViewModel.Downloaders.Add(new Modules.ViewModels.Downloader("", "Test2")
-        {
-            Chunks =
-            [
-                new ChunkDownloader(),
-                new ChunkDownloader(),
-                new ChunkDownloader(),
-            ],
-            Statue = DownloadStatue.Pending,
-            Progress = 0,
-            Speed = 0,
-        });
     }
 }
 
-public class StatueConvertToIcon : IValueConverter
+public class StatusConvertToIcon : IValueConverter
 {
     public object Convert(object value, Type targetType, object parameter, string language)
     {
-        if (value is not DownloadStatue status) return value;
+        if (value is not DownloadStatus status) return value;
         return status switch
         {
-            DownloadStatue.Pending => "",
-            DownloadStatue.Downloading => "\uE896",
-            DownloadStatue.Completed => "\uEC61",
-            DownloadStatue.Failed => "\uEB90",
-            DownloadStatue.Merging => "\uE7C4",
-            _ => value
+            DownloadStatus.Pending => "",
+            DownloadStatus.Downloading => "\uE896",
+            DownloadStatus.Completed => "\uEC61",
+            DownloadStatus.Failed => "\uEB90",
+            DownloadStatus.Merging => "\uE7C4",
+            DownloadStatus.Pause => "\uE769",
+            DownloadStatus.Canceled => "\uE74D",
+            _ => ""
         };
     }
 
@@ -100,10 +63,10 @@ public class StatueConvertToVisibilityForProgress : IValueConverter
 {
     public object Convert(object value, Type targetType, object parameter, string language)
     {
-        if (value is not DownloadStatue status) return value;
+        if (value is not DownloadStatus status) return value;
         return status switch
         {
-            DownloadStatue.Pending => Visibility.Visible,
+            DownloadStatus.Pending => Visibility.Visible,
             _ => Visibility.Collapsed,
         };
     }
@@ -118,10 +81,10 @@ public class StatueConvertToVisibilityForIcon : IValueConverter
 {
     public object Convert(object value, Type targetType, object parameter, string language)
     {
-        if (value is not DownloadStatue status) return value;
+        if (value is not DownloadStatus status) return value;
         return status switch
         {
-            DownloadStatue.Pending => Visibility.Collapsed,
+            DownloadStatus.Pending => Visibility.Collapsed,
             _ => Visibility.Visible,
         };
     }
@@ -136,10 +99,10 @@ public class StatueConvertToBoolForShowError : IValueConverter
 {
     public object Convert(object value, Type targetType, object parameter, string language)
     {
-        if (value is not DownloadStatue status) return false;
+        if (value is not DownloadStatus status) return false;
         return status switch
         {
-            DownloadStatue.Failed => true,
+            DownloadStatus.Failed => true,
             _ => false,
         };
     }
@@ -154,11 +117,11 @@ public class StatueConvertToBoolForIsIndeterminate : IValueConverter
 {
     public object Convert(object value, Type targetType, object parameter, string language)
     {
-        if (value is not DownloadStatue status) return false;
+        if (value is not DownloadStatus status) return false;
         return status switch
         {
-            DownloadStatue.Pending => true,
-            DownloadStatue.Merging => true,
+            DownloadStatus.Pending => true,
+            DownloadStatus.Merging => true,
             _ => false
         };
     }
@@ -173,10 +136,10 @@ public class StatueConvertToBoolForShowPaused : IValueConverter
 {
     public object Convert(object value, Type targetType, object parameter, string language)
     {
-        if (value is not DownloadStatue status) return false;
+        if (value is not DownloadStatus status) return false;
         return status switch
         {
-            DownloadStatue.Pause => true,
+            DownloadStatus.Pause => true,
             _ => false
         };
     }
@@ -221,6 +184,37 @@ public class CountConvertToVisibilityForTextblock : IValueConverter
     {
         if (value is not int count) return value;
         return count == 0 ? Visibility.Visible : Visibility.Collapsed;
+    }
+
+    public object ConvertBack(object value, Type targetType, object parameter, string language)
+    {
+        throw new NotImplementedException();
+    }
+}
+
+public class FilesizeToStringConverter : IValueConverter
+{
+    public object Convert(object value, Type targetType, object parameter, string language)
+    {
+        if (value is not long size || size < 0) return "Unknown";
+        var result = Utils.FilesizeConverters.iB.Convert(size);
+        return $"{result.Value:0.00} {result.Unit}";
+    }
+
+    public object ConvertBack(object value, Type targetType, object parameter, string language)
+    {
+        throw new NotImplementedException();
+    }
+}
+
+public class TimeToStringConverter : IValueConverter
+{
+    public object Convert(object value, Type targetType, object parameter, string language)
+    {
+        if (value is not long time || time < 0) return "--:--";
+        var mins = time / 60;
+        var secs = time % 60;
+        return $"{mins:00}:{secs:00}";
     }
 
     public object ConvertBack(object value, Type targetType, object parameter, string language)

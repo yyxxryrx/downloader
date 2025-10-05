@@ -159,4 +159,7 @@
   <data name="ChunkCountLabel.Text" xml:space="preserve">
     <value>Chunk Count:</value>
   </data>
+  <data name="EmptyTips.Text" xml:space="preserve">
+    <value>There are no downloads for the task yet</value>
+  </data>
 </root>

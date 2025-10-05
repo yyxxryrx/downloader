@@ -30,6 +30,8 @@ namespace Downloader.Modules.AskWindow
         public AskWindow(string url)
         {
             InitializeComponent();
+            this.CenterOnScreen();
+            this.SetForegroundWindow();
             ExtendsContentIntoTitleBar = true;
             Frame1.Navigate(typeof(MainPage), new AskWindowNavigateParameter(url, Close));
         }

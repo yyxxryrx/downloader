@@ -6,35 +6,54 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:Downloader.Modules.MainWindow.Views"
     xmlns:downloader="using:Downloader.Modules.ViewModels"
+    xmlns:global="using:Downloader.Modules"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
 
     <Page.Resources>
-        <local:StatueConvertToIcon x:Name="ConvertToIcon" />
+        <local:StatusConvertToIcon x:Name="ConvertToIcon" />
+        <local:TimeToStringConverter x:Name="TimeToStringConverter" />
+        <local:FilesizeToStringConverter x:Name="FilesizeToStringConverter" />
         <local:ProgressConvertToString x:Name="ProgressConvertToString" />
-        <local:StatueConvertToVisibilityForIcon x:Name="VisibilityForIcon" />
-        <local:StatueConvertToVisibilityForProgress x:Name="VisibilityForProgress" />
         <local:StatueConvertToBoolForShowError x:Name="BoolForShowError" />
         <local:StatueConvertToBoolForShowPaused x:Name="BoolForShowPaused" />
+        <local:StatueConvertToVisibilityForIcon x:Name="VisibilityForIcon" />
+        <local:StatueConvertToVisibilityForProgress x:Name="VisibilityForProgress" />
         <local:StatueConvertToBoolForIsIndeterminate x:Name="BoolForIsIndeterminate" />
         <local:CountConvertToVisibilityForListView x:Name="ConvertToVisibilityForListView" />
         <local:CountConvertToVisibilityForTextblock x:Name="ConvertToVisibilityForTextblock" />
     </Page.Resources>
 
     <Grid Margin="36">
-        <TextBlock Text="There are no downloads for the task yet"
+        <TextBlock x:Uid="EmptyTips"
+                   VerticalAlignment="Center"
+                   HorizontalAlignment="Center"
                    Style="{StaticResource TitleTextBlockStyle}"
-                   Visibility="{x:Bind ViewModel.Downloaders.Count,Mode=OneWay,Converter={StaticResource ConvertToVisibilityForTextblock}}" />
-        <ListView ItemsSource="{x:Bind ViewModel.Downloaders,Mode=OneWay}"
-                  Visibility="{x:Bind ViewModel.Downloaders.Count,Mode=OneWay,Converter={StaticResource ConvertToVisibilityForListView}}"
+                   Visibility="{x:Bind global:GlobalVars.Downloaders.Count,Mode=OneWay,Converter={StaticResource ConvertToVisibilityForTextblock}}" />
+        <ListView ItemsSource="{x:Bind global:GlobalVars.Downloaders,Mode=OneWay}"
+                  Visibility="{x:Bind global:GlobalVars.Downloaders.Count,Mode=OneWay,Converter={StaticResource ConvertToVisibilityForListView}}"
                   SelectionMode="None">
+            <ListView.Transitions>
+                <ContentThemeTransition />
+                <AddDeleteThemeTransition />
+            </ListView.Transitions>
             <ListView.ItemTemplate>
                 <DataTemplate x:DataType="downloader:Downloader">
                     <Expander ExpandDirection="Down"
                               HorizontalAlignment="Stretch"
                               HorizontalContentAlignment="Stretch"
                               Margin="0,8">
+                        <Expander.ContextFlyout>
+                            <MenuFlyout>
+                                <MenuFlyoutItem Command="{x:Bind PauseCommand}"
+                                                Text="Pause" />
+                                <MenuFlyoutItem Command="{x:Bind ResumeCommand}"
+                                                Text="Resume" />
+                                <MenuFlyoutItem Command="{x:Bind DeleteCommand}"
+                                                Text="Delete" />
+                            </MenuFlyout>
+                        </Expander.ContextFlyout>
                         <Expander.Header>
                             <Grid Margin="0,4">
                                 <Grid.ColumnDefinitions>
@@ -45,10 +64,10 @@
                                 <Grid Grid.Column="0"
                                       Margin="0,0,12,0">
                                     <FontIcon
-                                        Glyph="{x:Bind Statue,Mode=OneWay,Converter={StaticResource ConvertToIcon}}"
-                                        Visibility="{x:Bind Statue,Mode=OneWay,Converter={StaticResource VisibilityForIcon}}" />
+                                        Glyph="{x:Bind Status,Mode=OneWay,Converter={StaticResource ConvertToIcon}}"
+                                        Visibility="{x:Bind Status,Mode=OneWay,Converter={StaticResource VisibilityForIcon}}" />
                                     <ProgressRing IsActive="True"
-                                                  Visibility="{x:Bind Statue,Mode=OneWay,Converter={StaticResource VisibilityForProgress}}" />
+                                                  Visibility="{x:Bind Status,Mode=OneWay,Converter={StaticResource VisibilityForProgress}}" />
                                 </Grid>
                                 <StackPanel Grid.Column="1"
                                             Orientation="Vertical">
@@ -67,9 +86,9 @@
                                                      Margin="4,0"
                                                      VerticalAlignment="Center"
                                                      Value="{x:Bind Progress, Mode=OneWay}"
-                                                     IsIndeterminate="{x:Bind Statue,Mode=OneWay,Converter={StaticResource BoolForIsIndeterminate}}"
-                                                     ShowPaused="{x:Bind Statue,Mode=OneWay,Converter={StaticResource BoolForShowPaused}}"
-                                                     ShowError="{x:Bind Statue,Mode=OneWay,Converter={StaticResource BoolForShowError}}" />
+                                                     IsIndeterminate="{x:Bind Status,Mode=OneWay,Converter={StaticResource BoolForIsIndeterminate}}"
+                                                     ShowPaused="{x:Bind Status,Mode=OneWay,Converter={StaticResource BoolForShowPaused}}"
+                                                     ShowError="{x:Bind Status,Mode=OneWay,Converter={StaticResource BoolForShowError}}" />
                                         <TextBlock Grid.Column="1"
                                                    Margin="4,0,0,2"
                                                    VerticalAlignment="Center"
@@ -84,26 +103,35 @@
                                                     Orientation="Horizontal"
                                                     Spacing="4">
                                             <TextBlock x:Uid="SpeedLabel" />
-                                            <TextBlock Text="{x:Bind Speed,Mode=OneWay}" />
+                                            <StackPanel Orientation="Horizontal">
+                                                <TextBlock
+                                                    Text="{x:Bind Speed,Mode=OneWay,Converter={StaticResource FilesizeToStringConverter}}" />
+                                                <TextBlock Text="/s" />
+                                            </StackPanel>
                                         </StackPanel>
                                         <StackPanel Grid.Column="1"
                                                     HorizontalAlignment="Right"
                                                     Orientation="Horizontal"
                                                     Spacing="4">
                                             <TextBlock x:Uid="RemainingLabel" />
-                                            <TextBlock Text="--:--" />
+                                            <TextBlock
+                                                Text="{x:Bind RemainingTime,Mode=OneWay,Converter={StaticResource TimeToStringConverter}}" />
                                         </StackPanel>
                                     </Grid>
                                 </StackPanel>
                             </Grid>
                         </Expander.Header>
-                        <ListView ItemsSource="{x:Bind Chunks,Mode=OneWay}"
+                        <ListView ItemsSource="{x:Bind RunningChunks,Mode=OneWay}"
                                   SelectionMode="None">
+                            <ListView.Transitions>
+                                <ContentThemeTransition />
+                                <AddDeleteThemeTransition />
+                            </ListView.Transitions>
                             <ListView.Header>
                                 <StackPanel Orientation="Horizontal"
                                             Spacing="4">
                                     <TextBlock x:Uid="ChunkCountLabel" />
-                                    <TextBlock Text="{x:Bind Chunks.Count,Mode=OneWay}" />
+                                    <TextBlock Text="{x:Bind RunningChunks.Count,Mode=OneWay}" />
                                 </StackPanel>
                             </ListView.Header>
                             <ListView.ItemTemplate>
@@ -129,9 +157,9 @@
                                         <ProgressBar Grid.Column="1"
                                                      Margin="4,0"
                                                      Value="{x:Bind Progress, Mode=OneWay}"
-                                                     IsIndeterminate="{x:Bind Statue, Mode=OneWay,Converter={StaticResource BoolForIsIndeterminate}}"
-                                                     ShowError="{x:Bind Statue, Mode=OneWay,Converter={StaticResource BoolForShowError}}"
-                                                     ShowPaused="{x:Bind Statue, Mode=OneWay,Converter={StaticResource BoolForShowPaused}}" />
+                                                     IsIndeterminate="{x:Bind Status, Mode=OneWay,Converter={StaticResource BoolForIsIndeterminate}}"
+                                                     ShowError="{x:Bind Status, Mode=OneWay,Converter={StaticResource BoolForShowError}}"
+                                                     ShowPaused="{x:Bind Status, Mode=OneWay,Converter={StaticResource BoolForShowPaused}}" />
                                         <TextBlock Grid.Column="2"
                                                    Margin="4,0,0,2"
                                                    Text="{x:Bind Progress, Mode=OneWay,Converter={StaticResource ProgressConvertToString}}" />

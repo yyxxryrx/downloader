@@ -173,4 +173,8 @@
     <value>分块数量：</value>
     <comment>Chunk count label</comment>
   </data>
+  <data name="EmptyTips.Text" xml:space="preserve">
+    <value>暂时没有要下载的内容</value>
+    <comment>The empty tips for downloading page</comment>
+  </data>
 </root>

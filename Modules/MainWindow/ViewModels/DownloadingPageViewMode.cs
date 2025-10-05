@@ -9,6 +9,5 @@ namespace Downloader.Modules.MainWindow.ViewModels
 {
     public partial class DownloadingPageViewMode
     {
-        public ObservableCollection<Modules.ViewModels.Downloader> Downloaders = [];
     }
 }

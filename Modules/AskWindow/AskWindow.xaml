@@ -13,7 +13,8 @@
     Width="500"
     Height="285"
     IsResizable="False"
-    IsMaximizable="False">
+    IsMaximizable="False"
+    IsAlwaysOnTop="True">
 
     <Window.SystemBackdrop>
         <MicaBackdrop />
