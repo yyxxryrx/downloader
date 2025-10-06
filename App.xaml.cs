@@ -16,6 +16,8 @@ using Windows.ApplicationModel.Activation;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.Globalization;
+using Windows.System.UserProfile;
+using Downloader.Modules;
 using ApplicationLanguages = Microsoft.Windows.Globalization.ApplicationLanguages;
 
 // To learn more about WinUI, the WinUI project structure,
@@ -37,7 +39,12 @@ namespace Downloader
         public App()
         {
             InitializeComponent();
-            ApplicationLanguages.PrimaryLanguageOverride = "zh-CN";
+            if (!string.IsNullOrEmpty(GlobalVars.ConfigurationService.Language))
+                ApplicationLanguages.PrimaryLanguageOverride = GlobalVars.ConfigurationService.Language;
+            else if (GlobalizationPreferences.Languages.Count > 0 && ApplicationLanguages.Languages.Contains(GlobalizationPreferences.Languages[0]))
+                ApplicationLanguages.PrimaryLanguageOverride = GlobalizationPreferences.Languages[0];
+            else
+                ApplicationLanguages.PrimaryLanguageOverride = "en-US";
         }
 
         /// <summary>

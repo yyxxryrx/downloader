@@ -15,14 +15,17 @@
             <StackPanel Spacing="4">
                 <TextBlock x:Uid="LanguageLabel"
                            Style="{StaticResource BodyStrongTextBlockStyle}" />
+                <InfoBar IsOpen="False"
+                         x:Name="InfoBar1"
+                         Severity="Success"
+                         x:Uid="LanguageChangedInfoBar"/>
                 <controls:SettingsCard x:Uid="LanguageCard">
                     <controls:SettingsCard.HeaderIcon>
                         <FontIcon Glyph="&#xE775;" />
                     </controls:SettingsCard.HeaderIcon>
-                    <ComboBox>
-                        <x:String>English</x:String>
-                        <x:String>中文（简体）</x:String>
-                    </ComboBox>
+                    <ComboBox ItemsSource="{x:Bind ViewModel.Language.Forward.Keys}"
+                              SelectedItem="{x:Bind ViewModel.CurrentLanguage, Mode=TwoWay}"
+                              SelectionChanged="Language_OnSelectionChanged"/>
                 </controls:SettingsCard>
             </StackPanel>
         </StackPanel>
