@@ -46,6 +46,7 @@
     <PackageReference Include="BidirectionalMap" Version="2.0.0" />
     <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0" />
     <PackageReference Include="CommunityToolkit.WinUI.Controls.SettingsControls" Version="8.2.250402" />
+    <PackageReference Include="Microsoft.Data.Sqlite" Version="9.0.9" />
     <PackageReference Include="Microsoft.Windows.SDK.BuildTools" Version="10.0.26100.6584" />
     <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.8.250916003" />
     <PackageReference Include="WinUIEx" Version="2.8.0" />
@@ -91,5 +92,14 @@
     <PublishReadyToRun Condition="'$(Configuration)' != 'Debug'">True</PublishReadyToRun>
     <PublishTrimmed Condition="'$(Configuration)' == 'Debug'">False</PublishTrimmed>
     <PublishTrimmed Condition="'$(Configuration)' != 'Debug'">True</PublishTrimmed>
+    <GenerateAppInstallerFile>True</GenerateAppInstallerFile>
+    <AppxPackageSigningEnabled>True</AppxPackageSigningEnabled>
+    <PackageCertificateThumbprint>1F69BAA9CF5D2038DA86F4A4B3E3E73E31687ACC</PackageCertificateThumbprint>
+    <AppxPackageSigningTimestampDigestAlgorithm>SHA256</AppxPackageSigningTimestampDigestAlgorithm>
+    <AppxAutoIncrementPackageRevision>True</AppxAutoIncrementPackageRevision>
+    <GenerateTestArtifacts>True</GenerateTestArtifacts>
+    <AppxBundle>Never</AppxBundle>
+    <AppInstallerUri>D:\Desktop\Work\WinUI3</AppInstallerUri>
+    <HoursBetweenUpdateChecks>0</HoursBetweenUpdateChecks>
   </PropertyGroup>
 </Project>
