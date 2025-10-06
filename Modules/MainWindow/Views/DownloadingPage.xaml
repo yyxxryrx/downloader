@@ -37,7 +37,9 @@
                   Visibility="{x:Bind global:GlobalVars.Downloaders.Count,Mode=OneWay,Converter={StaticResource ConvertToVisibilityForListView}}"
                   SelectionMode="None">
             <ListView.Transitions>
+                <EdgeUIThemeTransition />
                 <ContentThemeTransition />
+                <EntranceThemeTransition />
                 <AddDeleteThemeTransition />
             </ListView.Transitions>
             <ListView.ItemTemplate>
@@ -96,15 +98,16 @@
                                         <StackPanel Orientation="Horizontal">
                                             <TextBlock Text="(" />
                                             <StackPanel Orientation="Horizontal"
-                                                        Visibility="{x:Bind Status,Mode=OneWay,Converter={StaticResource ConvertToVisibilityForDownloadTotal}}"
-                                                        Spacing="4">
+                                                        Spacing="2">
                                                 <TextBlock
+                                                    Visibility="{x:Bind Status,Mode=OneWay,Converter={StaticResource ConvertToVisibilityForDownloadTotal}}"
                                                     Text="{x:Bind DownloadTotal,Mode=OneWay,Converter={StaticResource FilesizeToStringConverter}}" />
                                                 <TextBlock Text="/"
                                                            Visibility="{x:Bind Status,Mode=OneWay,Converter={StaticResource ConvertToVisibilityForDownloadTotal}}" />
                                                 <TextBlock
                                                     Text="{x:Bind TotalSize, Converter={StaticResource FilesizeToStringConverter}}" />
                                             </StackPanel>
+                                            <TextBlock Text=")" />
                                         </StackPanel>
                                     </StackPanel>
                                     <Grid>

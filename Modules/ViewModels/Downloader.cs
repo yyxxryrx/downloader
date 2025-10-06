@@ -202,8 +202,9 @@ public partial class Downloader
     private async void OnChunkDownloadCompleted(ChunkDownloader sender)
     {
         UpdateInfo();
-        await Task.Delay(TimeSpan.FromSeconds(1));
-        DispatcherQueue.TryEnqueue(async () => {
+        if (RunningChunks.Count > 1)
+            await Task.Delay(TimeSpan.FromSeconds(1));
+        DispatcherQueue.TryEnqueue(async void () => {
             RunningChunks.Remove(sender);
             CompletedChunks.Add(sender);
             if (RunningChunks.Count != 0) return;

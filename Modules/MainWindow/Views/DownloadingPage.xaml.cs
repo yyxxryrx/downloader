@@ -249,7 +249,12 @@ public class StatusConvertToVisibilityForDownloadTotal : IValueConverter
 {
     public object Convert(object value, Type targetType, object parameter, string language)
     {
-        return value is not DownloadStatus.Completed ? Visibility.Visible : Visibility.Collapsed;
+        return value switch {
+            DownloadStatus.Downloading => Visibility.Visible,
+            DownloadStatus.Pause => Visibility.Visible,
+            DownloadStatus.Failed => Visibility.Visible,
+            _ => Visibility.Collapsed
+        };
     }
 
     public object ConvertBack(object value, Type targetType, object parameter, string language)

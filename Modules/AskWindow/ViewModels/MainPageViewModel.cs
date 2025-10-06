@@ -116,7 +116,7 @@ public partial class MainPageViewModel : ObservableObject
             Url = Url,
             TotalSize = FileSize,
             AllowRange = AllowRange,
-            ThreadCount = 8
+            ThreadCount = GlobalVars.ConfigurationService.ThreadCount
         };
         downloader.Init();
         GlobalVars.Downloaders.Add(downloader);
