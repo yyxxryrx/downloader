@@ -22,7 +22,10 @@ public partial class Downloader
 {
     [ObservableProperty] private long _speed;
     [ObservableProperty] private double _progress = -1;
-    [ObservableProperty] private DownloadStatus _status;
+
+    [ObservableProperty] [NotifyPropertyChangedFor(nameof(IsPaused))] [NotifyPropertyChangedFor(nameof(IsDownloading))]
+    private DownloadStatus _status;
+
     [ObservableProperty] private long _downloadTotal;
     [ObservableProperty] private long _remainingTime = -1;
     public ObservableCollection<ChunkDownloader> RunningChunks = [];
@@ -45,14 +48,16 @@ public partial class Downloader
 
     private DispatcherQueue DispatcherQueue { get; } = DispatcherQueue.GetForCurrentThread();
 
+    public bool IsPaused => Status is DownloadStatus.Pause;
+    public bool IsDownloading => Status is DownloadStatus.Downloading;
+
     public void Init()
     {
         var handler = new HttpClientHandler
         {
             AllowAutoRedirect = true,
-            UseCookies = false,
         };
-        var client = new HttpClient();
+        var client = new HttpClient(handler);
         client.DefaultRequestHeaders.UserAgent.ParseAdd(
             "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:143.0) Gecko/20100101 Firefox/143.0");
         client.DefaultRequestHeaders.CacheControl = new CacheControlHeaderValue
@@ -88,7 +93,11 @@ public partial class Downloader
                 task.OnDownloadFailed = OnChunkDownloadFailed;
             }
 
-            Resume();
+            Task.Run(async void () =>
+            {
+                await RemoveTempFile();
+                Resume();
+            });
         }
     }
 
@@ -193,17 +202,20 @@ public partial class Downloader
     private async void OnChunkDownloadCompleted(ChunkDownloader sender)
     {
         UpdateInfo();
-        RunningChunks.Remove(sender);
-        CompletedChunks.Add(sender);
-        if (RunningChunks.Count != 0) return;
-        Timer.Stop();
-        Timer.Close();
-        Timer.Dispose();
-        await MergeChunks();
-        await RemoveTempFile();
-        Progress = 100;
-        Status = DownloadStatus.Completed;
-        await Task.Delay(TimeSpan.FromSeconds(3));
-        GlobalVars.Downloaders.Remove(this);
+        await Task.Delay(TimeSpan.FromSeconds(1));
+        DispatcherQueue.TryEnqueue(async () => {
+            RunningChunks.Remove(sender);
+            CompletedChunks.Add(sender);
+            if (RunningChunks.Count != 0) return;
+            Timer.Stop();
+            Timer.Close();
+            Timer.Dispose();
+            await MergeChunks();
+            await RemoveTempFile();
+            Progress = 100;
+            Status = DownloadStatus.Completed;
+            await Task.Delay(TimeSpan.FromSeconds(3));
+            GlobalVars.Downloaders.Remove(this);
+        });
     }
 }

@@ -15,6 +15,7 @@ using Windows.Foundation.Collections;
 using Downloader.Modules.MainWindow.ViewModels;
 using Downloader.Modules.Models;
 using Downloader.Modules.ViewModels;
+using Microsoft.UI;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -59,7 +60,7 @@ public class StatusConvertToIcon : IValueConverter
     }
 }
 
-public class StatueConvertToVisibilityForProgress : IValueConverter
+public class StatusConvertToVisibilityForProgress : IValueConverter
 {
     public object Convert(object value, Type targetType, object parameter, string language)
     {
@@ -77,7 +78,7 @@ public class StatueConvertToVisibilityForProgress : IValueConverter
     }
 }
 
-public class StatueConvertToVisibilityForIcon : IValueConverter
+public class StatusConvertToVisibilityForIcon : IValueConverter
 {
     public object Convert(object value, Type targetType, object parameter, string language)
     {
@@ -95,7 +96,7 @@ public class StatueConvertToVisibilityForIcon : IValueConverter
     }
 }
 
-public class StatueConvertToBoolForShowError : IValueConverter
+public class StatusConvertToBoolForShowError : IValueConverter
 {
     public object Convert(object value, Type targetType, object parameter, string language)
     {
@@ -113,7 +114,7 @@ public class StatueConvertToBoolForShowError : IValueConverter
     }
 }
 
-public class StatueConvertToBoolForIsIndeterminate : IValueConverter
+public class StatusConvertToBoolForIsIndeterminate : IValueConverter
 {
     public object Convert(object value, Type targetType, object parameter, string language)
     {
@@ -132,7 +133,7 @@ public class StatueConvertToBoolForIsIndeterminate : IValueConverter
     }
 }
 
-public class StatueConvertToBoolForShowPaused : IValueConverter
+public class StatusConvertToBoolForShowPaused : IValueConverter
 {
     public object Convert(object value, Type targetType, object parameter, string language)
     {
@@ -215,6 +216,40 @@ public class TimeToStringConverter : IValueConverter
         var mins = time / 60;
         var secs = time % 60;
         return $"{mins:00}:{secs:00}";
+    }
+
+    public object ConvertBack(object value, Type targetType, object parameter, string language)
+    {
+        throw new NotImplementedException();
+    }
+}
+
+public class StatusConvertToColor : IValueConverter
+{
+    public object Convert(object value, Type targetType, object parameter, string language)
+    {
+        var defaultColor = (Application.Current.Resources["SystemControlHighlightAccentBrush"] as SolidColorBrush)!;
+        if (value is not DownloadStatus status) return defaultColor;
+        return status switch
+        {
+            DownloadStatus.Completed => new SolidColorBrush(Colors.LimeGreen),
+            DownloadStatus.Failed => (Application.Current.Resources["SystemControlErrorTextForegroundBrush"] as SolidColorBrush)!,
+            DownloadStatus.Canceled => new SolidColorBrush(Colors.Gold),
+            _ => defaultColor
+        };
+    }
+
+    public object ConvertBack(object value, Type targetType, object parameter, string language)
+    {
+        throw new NotImplementedException();
+    }
+}
+
+public class StatusConvertToVisibilityForDownloadTotal : IValueConverter
+{
+    public object Convert(object value, Type targetType, object parameter, string language)
+    {
+        return value is not DownloadStatus.Completed ? Visibility.Visible : Visibility.Collapsed;
     }
 
     public object ConvertBack(object value, Type targetType, object parameter, string language)

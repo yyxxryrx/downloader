@@ -17,7 +17,7 @@
         </Grid.RowDefinitions>
         <CommandBar Grid.Row="0"
                     DefaultLabelPosition="Right">
-            <AppBarButton Label="New Download"
+            <AppBarButton x:Uid="NewDownloadAppbarButton"
                           Command="{x:Bind ViewModel.NewDownloadCommand}">
                 <AppBarButton.Icon>
                     <FontIcon Glyph="&#xECC8;" />

@@ -1,5 +1,6 @@
-﻿using System;
+using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -16,36 +17,56 @@ namespace Downloader.Modules.AskWindow.ViewModels;
 
 public partial class MainPageViewModel : ObservableObject
 {
-    [ObservableProperty] Uri _url;
-    [ObservableProperty] private bool _isCompleted = true;
+    [ObservableProperty] [NotifyPropertyChangedFor(nameof(CanDownload))]
+    Uri? _url;
+
+    [ObservableProperty] [NotifyPropertyChangedFor(nameof(CanDownload))]
+    private bool _isCompleted = true;
+
     [ObservableProperty] private string _fileName = "";
     [ObservableProperty] private long _fileSize = -1;
+
+    public bool CanDownload => Url is not null && IsCompleted;
 
     public Storyboard? StartStoryboard { get; init; }
     public Storyboard? EndStoryboard { get; init; }
     public DispatcherQueue? DispatcherQueue { get; init; }
     public CloseWindow? CloseWindow { get; set; }
 
-    public async void LoadUri(Uri uri)
+    private bool AllowRange { get; set; }
+
+    public async void LoadUri(Uri? uri)
     {
-        Url = uri;
+        if (uri is null) return;
         IsCompleted = false;
         FileName = Path.GetFileName(uri.AbsolutePath);
+        AllowRange = false;
         var query = System.Web.HttpUtility.ParseQueryString(uri.Query);
         if (query["path"] is { } path)
             FileName = Path.GetFileName(path);
         using var client = new HttpClient();
         client.Timeout = TimeSpan.FromSeconds(5);
         using var request = new HttpRequestMessage(HttpMethod.Head, uri);
-        request.Headers.UserAgent.ParseAdd("Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:143.0) Gecko/20100101 Firefox/143.0");
-        var response = await client.SendAsync(request);
-        Debug.WriteLine(response);
-        if (response.IsSuccessStatusCode)
+        request.Headers.UserAgent.ParseAdd(
+            "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:143.0) Gecko/20100101 Firefox/143.0");
+        try
         {
-            if (response.Content.Headers.ContentDisposition?.FileName is { } fileName)
-                FileName = fileName;
-            FileSize = response.Content.Headers.ContentLength ?? -1;
+            var response = await client.SendAsync(request);
+            Debug.WriteLine(response);
+            if (response.IsSuccessStatusCode)
+            {
+                if (response.Content.Headers.ContentDisposition?.FileName is { } fileName)
+                    FileName = fileName;
+                FileSize = response.Content.Headers.ContentLength ?? -1;
+                AllowRange = response.Headers.TryGetValues("Accept-Ranges", out var values) &&
+                             values.Any(i => string.Equals(i, "bytes", StringComparison.OrdinalIgnoreCase));
+            }
         }
+        catch (TaskCanceledException)
+        {
+            FileSize = -1;
+        }
+
         Url = uri;
 
         IsCompleted = true;
@@ -60,6 +81,7 @@ public partial class MainPageViewModel : ObservableObject
     [RelayCommand]
     private void CopyUrl()
     {
+        if (Url is null) return;
         var package = new DataPackage();
         package.SetText(Url.AbsoluteUri);
         Clipboard.SetContent(package);
@@ -86,14 +108,15 @@ public partial class MainPageViewModel : ObservableObject
     [RelayCommand]
     private void NewDownloader()
     {
+        if (Url is null) return;
         var downloader = new Modules.ViewModels.Downloader
         {
             FileName = FileName,
             TargetPath = "D:/Downloads/abcd",
             Url = Url,
             TotalSize = FileSize,
-            AllowRange = true,
-            ThreadCount = 24
+            AllowRange = AllowRange,
+            ThreadCount = 8
         };
         downloader.Init();
         GlobalVars.Downloaders.Add(downloader);

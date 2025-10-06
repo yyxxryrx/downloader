@@ -162,4 +162,37 @@
   <data name="EmptyTips.Text" xml:space="preserve">
     <value>There are no downloads for the task yet</value>
   </data>
+  <data name="LanguageChangedInfoBar.Title" xml:space="preserve">
+    <value>Sucess</value>
+  </data>
+  <data name="LanguageChangedInfoBar.Message" xml:space="preserve">
+    <value>Restart to apply</value>
+  </data>
+  <data name="Auto" xml:space="preserve">
+    <value>Auto</value>
+  </data>
+  <data name="DeleteMenuFlyoutItem.Text" xml:space="preserve">
+    <value>Delete</value>
+  </data>
+  <data name="PauseMenuFlyoutItem.Text" xml:space="preserve">
+    <value>Pause</value>
+  </data>
+  <data name="ResumeMenuFlyoutItem.Text" xml:space="preserve">
+    <value>Resume</value>
+  </data>
+  <data name="CpoyUrlButton.ToolTipService.ToolTip" xml:space="preserve">
+    <value>Copy url</value>
+  </data>
+  <data name="DownloadButton.Content" xml:space="preserve">
+    <value>Download</value>
+  </data>
+  <data name="CancelButton.Content" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="NewDownloadAppBarButton.Label" xml:space="preserve">
+    <value>New Download</value>
+  </data>
+  <data name="Unknown" xml:space="preserve">
+    <value>Unknown</value>
+  </data>
 </root>

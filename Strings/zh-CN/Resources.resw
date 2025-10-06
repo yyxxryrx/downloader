@@ -177,4 +177,48 @@
     <value>暂时没有要下载的内容</value>
     <comment>The empty tips for downloading page</comment>
   </data>
+  <data name="LanguageChangedInfoBar.Title" xml:space="preserve">
+    <value>成功</value>
+    <comment>The title of the language changed infobar</comment>
+  </data>
+  <data name="LanguageChangedInfoBar.Message" xml:space="preserve">
+    <value>重启后生效</value>
+    <comment>The message of the language changed infobar</comment>
+  </data>
+  <data name="Auto" xml:space="preserve">
+    <value>自动选择</value>
+    <comment>Auto Select</comment>
+  </data>
+  <data name="DeleteMenuFlyoutItem.Text" xml:space="preserve">
+    <value>删除</value>
+    <comment>MenuFlyoutItem text</comment>
+  </data>
+  <data name="PauseMenuFlyoutItem.Text" xml:space="preserve">
+    <value>暂停</value>
+    <comment>PauseMenuFlyoutItem  Text</comment>
+  </data>
+  <data name="ResumeMenuFlyoutItem.Text" xml:space="preserve">
+    <value>恢复</value>
+    <comment>MenuFlyoutItem Text</comment>
+  </data>
+  <data name="CpoyUrlButton.ToolTipService.ToolTip" xml:space="preserve">
+    <value>复制链接</value>
+    <comment>The tooltip of copy url button</comment>
+  </data>
+  <data name="DownloadButton.Content" xml:space="preserve">
+    <value>下载</value>
+    <comment>The text of download button</comment>
+  </data>
+  <data name="CancelButton.Content" xml:space="preserve">
+    <value>取消</value>
+    <comment>The cancel button text</comment>
+  </data>
+  <data name="NewDownloadAppBarButton.Label" xml:space="preserve">
+    <value>新建下载</value>
+    <comment>The label text of the new download app bar button</comment>
+  </data>
+  <data name="Unknown" xml:space="preserve">
+    <value>未知</value>
+    <comment>Unknown</comment>
+  </data>
 </root>

@@ -29,6 +29,7 @@
                              Duration="0:0:0.2" />
         </Storyboard>
 
+        <local:UriToStringConverter x:Name="UriToStringConverter" />
         <local:FilesizeToStringConverter x:Name="FilesizeToStringConverter" />
         <local:IsCompletedToVisibilityForGrid x:Name="CompletedToVisibilityForGrid" />
         <local:IsCompletedToVisibilityForProgressRing x:Name="CompletedToVisibilityForProgressRing" />
@@ -57,10 +58,10 @@
                        Margin="4,0" />
             <TextBox Grid.Column="1"
                      Margin="4,0"
-                     Text="{x:Bind ViewModel.Url,Mode=TwoWay}" />
+                     Text="{x:Bind ViewModel.Url,Mode=TwoWay,Converter={StaticResource UriToStringConverter}}" />
             <Button Grid.Column="2"
-                    Command="{x:Bind ViewModel.CopyUrlCommand}"
-                    ToolTipService.ToolTip="Copy url">
+                    x:Uid="CopyUrlButton"
+                    Command="{x:Bind ViewModel.CopyUrlCommand}">
                 <Grid>
                     <FontIcon x:Name="CopyIcon" Glyph="&#xE8C8;" />
                     <FontIcon x:Name="AcceptIcon" Glyph="&#xE8FB;" Opacity="0" />
@@ -87,8 +88,8 @@
                             <ColumnDefinition Width="*" />
                         </Grid.ColumnDefinitions>
                         <TextBlock Grid.Column="0"
+                                   x:Uid="FilenameLabel"
                                    Margin="4,0"
-                                   Text="File name:"
                                    VerticalAlignment="Center"
                                    Style="{StaticResource BodyStrongTextBlockStyle}" />
                         <TextBox Grid.Column="1"
@@ -141,12 +142,12 @@
                         HorizontalAlignment="Right"
                         Margin="8"
                         Spacing="8">
-                <Button Content="Cancel"
+                <Button x:Uid="CancelButton"
                         Command="{x:Bind ViewModel.CloseCommand}" />
-                <Button Content="Download"
-                        IsEnabled="{x:Bind ViewModel.IsCompleted,Mode=OneWay}"
+                <Button x:Uid="DownloadButton"
+                        IsEnabled="{x:Bind ViewModel.CanDownload,Mode=OneWay}"
                         Style="{StaticResource AccentButtonStyle}"
-                        Command="{x:Bind ViewModel.NewDownloaderCommand}"/>
+                        Command="{x:Bind ViewModel.NewDownloaderCommand}" />
             </StackPanel>
         </Grid>
     </Grid>

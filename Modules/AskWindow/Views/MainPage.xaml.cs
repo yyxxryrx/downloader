@@ -5,6 +5,7 @@ using Downloader.Modules.AskWindow.Models;
 using Downloader.Modules.AskWindow.ViewModels;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Data;
+using Microsoft.Windows.ApplicationModel.Resources;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -55,9 +56,10 @@ public sealed partial class MainPage : Page
 
 public class FilesizeToStringConverter : IValueConverter
 {
+    private ResourceLoader ResourceLoader { get; } = new();
     public object Convert(object value, Type targetType, object parameter, string language)
     {
-        if (value is not long size || size < 0) return "Unknown";
+        if (value is not long size || size < 0) return ResourceLoader.GetString("Unknown");
         var result = Utils.FilesizeConverters.iB.Convert(size);
         return $"{result.Value:0.00} {result.Unit}";
     }
@@ -93,5 +95,26 @@ public class IsCompletedToVisibilityForProgressRing : IValueConverter
     public object ConvertBack(object value, Type targetType, object parameter, string language)
     {
         throw new NotImplementedException();
+    }
+}
+
+public class UriToStringConverter : IValueConverter
+{
+    public object Convert(object? value, Type targetType, object parameter, string language)
+    {
+        return value is not Uri uri ? "" : uri.AbsoluteUri;
+    }
+
+    public object? ConvertBack(object value, Type targetType, object parameter, string language)
+    {
+        if (value is not string uri) return null;
+        try
+        {
+            return new Uri(uri);
+        }
+        catch (Exception)
+        {
+            return null;
+        }
     }
 }

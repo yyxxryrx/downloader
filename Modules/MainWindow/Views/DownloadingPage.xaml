@@ -16,13 +16,15 @@
         <local:TimeToStringConverter x:Name="TimeToStringConverter" />
         <local:FilesizeToStringConverter x:Name="FilesizeToStringConverter" />
         <local:ProgressConvertToString x:Name="ProgressConvertToString" />
-        <local:StatueConvertToBoolForShowError x:Name="BoolForShowError" />
-        <local:StatueConvertToBoolForShowPaused x:Name="BoolForShowPaused" />
-        <local:StatueConvertToVisibilityForIcon x:Name="VisibilityForIcon" />
-        <local:StatueConvertToVisibilityForProgress x:Name="VisibilityForProgress" />
-        <local:StatueConvertToBoolForIsIndeterminate x:Name="BoolForIsIndeterminate" />
+        <local:StatusConvertToColor x:Name="StatusConvertToColor" />
+        <local:StatusConvertToBoolForShowError x:Name="BoolForShowError" />
+        <local:StatusConvertToBoolForShowPaused x:Name="BoolForShowPaused" />
+        <local:StatusConvertToVisibilityForIcon x:Name="VisibilityForIcon" />
+        <local:StatusConvertToVisibilityForProgress x:Name="VisibilityForProgress" />
+        <local:StatusConvertToBoolForIsIndeterminate x:Name="BoolForIsIndeterminate" />
         <local:CountConvertToVisibilityForListView x:Name="ConvertToVisibilityForListView" />
         <local:CountConvertToVisibilityForTextblock x:Name="ConvertToVisibilityForTextblock" />
+        <local:StatusConvertToVisibilityForDownloadTotal x:Name="ConvertToVisibilityForDownloadTotal" />
     </Page.Resources>
 
     <Grid Margin="36">
@@ -46,12 +48,27 @@
                               Margin="0,8">
                         <Expander.ContextFlyout>
                             <MenuFlyout>
-                                <MenuFlyoutItem Command="{x:Bind PauseCommand}"
-                                                Text="Pause" />
-                                <MenuFlyoutItem Command="{x:Bind ResumeCommand}"
-                                                Text="Resume" />
-                                <MenuFlyoutItem Command="{x:Bind DeleteCommand}"
-                                                Text="Delete" />
+                                <MenuFlyoutItem x:Uid="PauseMenuFlyoutItem"
+                                                Command="{x:Bind PauseCommand}"
+                                                IsEnabled="{x:Bind IsDownloading,Mode=OneWay}">
+                                    <MenuFlyoutItem.Icon>
+                                        <FontIcon Glyph="&#xE71A;" />
+                                    </MenuFlyoutItem.Icon>
+                                </MenuFlyoutItem>
+                                <MenuFlyoutItem x:Uid="ResumeMenuFlyoutItem"
+                                                Command="{x:Bind ResumeCommand}"
+                                                IsEnabled="{x:Bind IsPaused, Mode=OneWay}">
+                                    <MenuFlyoutItem.Icon>
+                                        <FontIcon Glyph="&#xE768;" />
+                                    </MenuFlyoutItem.Icon>
+                                </MenuFlyoutItem>
+                                <MenuFlyoutItem x:Uid="DeleteMenuFlyoutItem"
+                                                Command="{x:Bind DeleteCommand}"
+                                                IsEnabled="{x:Bind IsPaused,Mode=OneWay}">
+                                    <MenuFlyoutItem.Icon>
+                                        <FontIcon Glyph="&#xE74D;" />
+                                    </MenuFlyoutItem.Icon>
+                                </MenuFlyoutItem>
                             </MenuFlyout>
                         </Expander.ContextFlyout>
                         <Expander.Header>
@@ -76,6 +93,19 @@
                                         <TextBlock x:Uid="FilenameLabel"
                                                    Style="{StaticResource BodyStrongTextBlockStyle}" />
                                         <TextBlock Text="{x:Bind FileName}" />
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock Text="(" />
+                                            <StackPanel Orientation="Horizontal"
+                                                        Visibility="{x:Bind Status,Mode=OneWay,Converter={StaticResource ConvertToVisibilityForDownloadTotal}}"
+                                                        Spacing="4">
+                                                <TextBlock
+                                                    Text="{x:Bind DownloadTotal,Mode=OneWay,Converter={StaticResource FilesizeToStringConverter}}" />
+                                                <TextBlock Text="/"
+                                                           Visibility="{x:Bind Status,Mode=OneWay,Converter={StaticResource ConvertToVisibilityForDownloadTotal}}" />
+                                                <TextBlock
+                                                    Text="{x:Bind TotalSize, Converter={StaticResource FilesizeToStringConverter}}" />
+                                            </StackPanel>
+                                        </StackPanel>
                                     </StackPanel>
                                     <Grid>
                                         <Grid.ColumnDefinitions>
@@ -87,6 +117,7 @@
                                                      VerticalAlignment="Center"
                                                      Value="{x:Bind Progress, Mode=OneWay}"
                                                      IsIndeterminate="{x:Bind Status,Mode=OneWay,Converter={StaticResource BoolForIsIndeterminate}}"
+                                                     Foreground="{x:Bind Status, Mode=OneWay,Converter={StaticResource StatusConvertToColor}}"
                                                      ShowPaused="{x:Bind Status,Mode=OneWay,Converter={StaticResource BoolForShowPaused}}"
                                                      ShowError="{x:Bind Status,Mode=OneWay,Converter={StaticResource BoolForShowError}}" />
                                         <TextBlock Grid.Column="1"
@@ -158,6 +189,7 @@
                                                      Margin="4,0"
                                                      Value="{x:Bind Progress, Mode=OneWay}"
                                                      IsIndeterminate="{x:Bind Status, Mode=OneWay,Converter={StaticResource BoolForIsIndeterminate}}"
+                                                     Foreground="{x:Bind Status, Mode=OneWay,Converter={StaticResource StatusConvertToColor}}"
                                                      ShowError="{x:Bind Status, Mode=OneWay,Converter={StaticResource BoolForShowError}}"
                                                      ShowPaused="{x:Bind Status, Mode=OneWay,Converter={StaticResource BoolForShowPaused}}" />
                                         <TextBlock Grid.Column="2"
