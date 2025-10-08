@@ -249,4 +249,8 @@
     <value>致命错误</value>
     <comment>Fatal</comment>
   </data>
+  <data name="CopyThisLine.Text" xml:space="preserve">
+    <value>复制此行</value>
+    <comment>Copy this line</comment>
+  </data>
 </root>

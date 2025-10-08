@@ -53,9 +53,7 @@
                   ItemsSource="{x:Bind ViewModel.Logs,Mode=OneWay}"
                   SelectionMode="None">
             <ListView.Transitions>
-                <EdgeUIThemeTransition />
                 <ContentThemeTransition />
-                <EntranceThemeTransition />
                 <AddDeleteThemeTransition />
             </ListView.Transitions>
             <ListView.ItemTemplate>
@@ -63,19 +61,30 @@
                     <Border Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
                             BorderBrush="{StaticResource CardStrokeColorDefaultBrush}"
                             CornerRadius="{ThemeResource OverlayCornerRadius}"
-                            Height="50"
+                            Height="55"
                             Padding="8"
-                            Margin="0,8"
-                            Translation="0,0,8">
+                            Margin="0,6"
+                            Translation="0,0,16">
                         <Border.Shadow>
                             <ThemeShadow x:Name="shadow" />
                         </Border.Shadow>
+                        <Border.ContextFlyout>
+                            <MenuFlyout>
+                                <MenuFlyoutItem x:Uid="CopyThisLine" 
+                                                Command="{x:Bind CopyToClipboardCommand}">
+                                    <MenuFlyoutItem.Icon>
+                                        <FontIcon Glyph="&#xE8C8;" />
+                                    </MenuFlyoutItem.Icon>
+                                </MenuFlyoutItem>
+                            </MenuFlyout>
+                        </Border.ContextFlyout>
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="Auto" />
                                 <ColumnDefinition Width="*" />
                             </Grid.ColumnDefinitions>
                             <FontIcon Grid.Column="0"
+                                      Margin="4,0"
                                       Foreground="{x:Bind Level, Converter={StaticResource LevelToColorConverter}}"
                                       Glyph="{x:Bind Level, Converter={StaticResource LevelToIconConverter}}" />
                             <Grid Grid.Column="1" Margin="4,0">

@@ -216,4 +216,7 @@
   <data name="Fatal" xml:space="preserve">
     <value>Fatal</value>
   </data>
+  <data name="CopyThisLine.Text" xml:space="preserve">
+    <value>Copy this line</value>
+  </data>
 </root>
