@@ -221,4 +221,32 @@
     <value>未知</value>
     <comment>Unknown</comment>
   </data>
+  <data name="Logging" xml:space="preserve">
+    <value>日志</value>
+    <comment>logging</comment>
+  </data>
+  <data name="LoggingNavigationViewItem.Content" xml:space="preserve">
+    <value>日志</value>
+    <comment>The content of logging NavigationViewItem</comment>
+  </data>
+  <data name="Debug" xml:space="preserve">
+    <value>调试</value>
+    <comment>Debug</comment>
+  </data>
+  <data name="Information" xml:space="preserve">
+    <value>信息</value>
+    <comment>Information</comment>
+  </data>
+  <data name="Warning" xml:space="preserve">
+    <value>警告</value>
+    <comment>Warning</comment>
+  </data>
+  <data name="Error" xml:space="preserve">
+    <value>错误</value>
+    <comment>Error</comment>
+  </data>
+  <data name="Fatal" xml:space="preserve">
+    <value>致命错误</value>
+    <comment>Fatal</comment>
+  </data>
 </root>

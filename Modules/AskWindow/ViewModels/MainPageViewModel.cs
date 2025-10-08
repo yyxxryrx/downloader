@@ -12,6 +12,7 @@ using CommunityToolkit.Mvvm.Input;
 using Downloader.Modules.AskWindow.Models;
 using Microsoft.UI.Dispatching;
 using Microsoft.UI.Xaml.Media.Animation;
+using Serilog;
 
 namespace Downloader.Modules.AskWindow.ViewModels;
 
@@ -53,6 +54,7 @@ public partial class MainPageViewModel : ObservableObject
         {
             var response = await client.SendAsync(request);
             Debug.WriteLine(response);
+            Log.Debug("File info response: {@Response}", response);
             if (response.IsSuccessStatusCode)
             {
                 if (response.Content.Headers.ContentDisposition?.FileName is { } fileName)
@@ -61,9 +63,12 @@ public partial class MainPageViewModel : ObservableObject
                 AllowRange = response.Headers.TryGetValues("Accept-Ranges", out var values) &&
                              values.Any(i => string.Equals(i, "bytes", StringComparison.OrdinalIgnoreCase));
             }
+            Log.Information("File info, name: {Filename}, url: {Url}", FileName, uri);
         }
-        catch (TaskCanceledException)
+        catch (Exception ex)
         {
+            if (ex is not TaskCanceledException)
+                Log.Error(ex, "get file info error");
             FileSize = -1;
         }
 
@@ -90,12 +95,19 @@ public partial class MainPageViewModel : ObservableObject
             return;
         DispatcherQueue?.TryEnqueue(async void () =>
         {
-            StartStoryboard.Begin();
-            await Task.Delay(1500);
-            EndStoryboard.Begin();
-            await Task.Delay(300);
-            EndStoryboard.Stop();
-            StartStoryboard.Stop();
+            try
+            {
+                StartStoryboard.Begin();
+                await Task.Delay(1500);
+                EndStoryboard.Begin();
+                await Task.Delay(300);
+                EndStoryboard.Stop();
+                StartStoryboard.Stop();
+            }
+            catch (Exception e)
+            {
+                Log.Error(e, "Play storyboard error");
+            }
         });
     }
 
@@ -109,6 +121,7 @@ public partial class MainPageViewModel : ObservableObject
     private void NewDownloader()
     {
         if (Url is null) return;
+        Log.Information("Download {Filename} start, url: {Url}", FileName, Url);
         var downloader = new Modules.ViewModels.Downloader
         {
             FileName = FileName,
@@ -118,6 +131,7 @@ public partial class MainPageViewModel : ObservableObject
             AllowRange = AllowRange,
             ThreadCount = GlobalVars.ConfigurationService.ThreadCount
         };
+        Log.Debug("Downloader: {@Downloader}", downloader);
         downloader.Init();
         GlobalVars.Downloaders.Add(downloader);
         CloseWindow?.Invoke();

@@ -27,12 +27,12 @@ namespace Downloader.Modules.MainWindow.Views;
 /// </summary>
 public sealed partial class DownloadingPage : Page
 {
-    public DownloadingPageViewMode ViewModel => (DataContext as DownloadingPageViewMode)!;
+    public DownloadingPageViewModel ViewModel => (DataContext as DownloadingPageViewModel)!;
 
     public DownloadingPage()
     {
         InitializeComponent();
-        DataContext = new DownloadingPageViewMode();
+        DataContext = new DownloadingPageViewModel();
     }
 }
 

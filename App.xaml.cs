@@ -56,6 +56,7 @@ public partial class App : Application
             .WriteTo.Sink(GlobalVars.UiSink)
             .WriteTo.File("logs/log-.txt", rollingInterval: RollingInterval.Day, retainedFileCountLimit: 30);
         Log.Logger = configuration.CreateLogger();
+        Log.Information("Program started");
     }
 
     /// <summary>

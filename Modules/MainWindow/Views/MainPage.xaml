@@ -52,6 +52,15 @@
                 <TextBlock Text="{x:Bind Loader.GetString(ViewModel.HeaderText), Mode=OneWay}"
                            FontWeight="Medium" />
             </NavigationView.Header>
+            <NavigationView.FooterMenuItems>
+                <NavigationViewItemSeparator Margin="8,0" />
+                <NavigationViewItem x:Uid="LoggingNavigationViewItem" 
+                                    Tag="Logging">
+                    <NavigationViewItem.Icon>
+                        <FontIcon Glyph="&#xE95E;" />
+                    </NavigationViewItem.Icon>
+                </NavigationViewItem>
+            </NavigationView.FooterMenuItems>
             <Frame x:Name="Frame1" />
         </NavigationView>
     </Grid>

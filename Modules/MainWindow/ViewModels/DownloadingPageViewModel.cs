@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Downloader.Modules.MainWindow.ViewModels
 {
-    public partial class DownloadingPageViewMode
+    public partial class DownloadingPageViewModel
     {
     }
 }

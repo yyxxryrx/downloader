@@ -30,6 +30,7 @@ namespace Downloader.Modules.MainWindow.ViewModels
             {
                 "History" => typeof(HistoryPage),
                 "Downloading" => typeof(DownloadingPage),
+                "Logging" => typeof(LoggingPage),
                 _ => PageType
             };
         }
