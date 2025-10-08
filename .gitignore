@@ -2,3 +2,12 @@
 /.vs/
 /obj/
 /bin/
+/AppPackages/
+/AppPackages/*
+/AppPackages/Downloader_1.0.0.0_Debug_Test/
+/AppPackages/Downloader_1.0.0.0_x64_Debug_Test/
+/AppPackages/Downloader_1.0.0.0_x86_Debug_Test/
+/AppPackages/Downloader_1.0.0.0_Debug_Test.zip
+/AppPackages/Downloader_x64.appinstaller
+/AppPackages/Downloader_x86.appinstaller
+/AppPackages/index.html

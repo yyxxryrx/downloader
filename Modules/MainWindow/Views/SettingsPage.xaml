@@ -18,15 +18,30 @@
                 <InfoBar IsOpen="False"
                          x:Name="InfoBar1"
                          Severity="Success"
-                         x:Uid="LanguageChangedInfoBar"/>
+                         x:Uid="LanguageChangedInfoBar" />
                 <controls:SettingsCard x:Uid="LanguageCard">
                     <controls:SettingsCard.HeaderIcon>
                         <FontIcon Glyph="&#xE775;" />
                     </controls:SettingsCard.HeaderIcon>
                     <ComboBox ItemsSource="{x:Bind ViewModel.Language.Forward.Keys}"
                               SelectedItem="{x:Bind ViewModel.CurrentLanguage, Mode=TwoWay}"
-                              SelectionChanged="Language_OnSelectionChanged"/>
+                              SelectionChanged="Language_OnSelectionChanged" />
                 </controls:SettingsCard>
+            </StackPanel>
+            <StackPanel Spacing="4">
+                <TextBlock Text="Thread count"
+                           Style="{StaticResource BodyStrongTextBlockStyle}" />
+                <controls:SettingsExpander Header="Thread Count"
+                                           Description="The number of threads to use for downloading.">
+                    <controls:SettingsExpander.HeaderIcon>
+                        <FontIcon Glyph="&#xE9E9;" />
+                    </controls:SettingsExpander.HeaderIcon>
+                    <ComboBox>
+                        <x:String>Default</x:String>
+                        <x:String>Presets</x:String>
+                        <x:String>Custom</x:String>
+                    </ComboBox>
+                </controls:SettingsExpander>
             </StackPanel>
         </StackPanel>
     </Grid>

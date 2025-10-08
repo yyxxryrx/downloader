@@ -18,43 +18,53 @@ using Windows.Foundation.Collections;
 using Windows.Globalization;
 using Windows.System.UserProfile;
 using Downloader.Modules;
+using Serilog;
 using ApplicationLanguages = Microsoft.Windows.Globalization.ApplicationLanguages;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
 
-namespace Downloader
+namespace Downloader;
+
+/// <summary>
+/// Provides application-specific behavior to supplement the default Application class.
+/// </summary>
+public partial class App : Application
 {
+    private Window? _window;
+
     /// <summary>
-    /// Provides application-specific behavior to supplement the default Application class.
+    /// Initializes the singleton application object.  This is the first line of authored code
+    /// executed, and as such is the logical equivalent of main() or WinMain().
     /// </summary>
-    public partial class App : Application
+    public App()
     {
-        private Window? _window;
+        InitializeComponent();
+        if (!string.IsNullOrEmpty(GlobalVars.ConfigurationService.Language))
+            ApplicationLanguages.PrimaryLanguageOverride = GlobalVars.ConfigurationService.Language;
+        else if (GlobalizationPreferences.Languages.Count > 0 &&
+                 ApplicationLanguages.Languages.Contains(GlobalizationPreferences.Languages[0]))
+            ApplicationLanguages.PrimaryLanguageOverride = GlobalizationPreferences.Languages[0];
+        else
+            ApplicationLanguages.PrimaryLanguageOverride = "en-US";
+        var configuration = new LoggerConfiguration();
+        configuration
+#if !DEBUG
+        .MinimumLevel.Information()
+#endif
+            .WriteTo.Console()
+            .WriteTo.Sink(GlobalVars.UiSink)
+            .WriteTo.File("logs/log-.txt", rollingInterval: RollingInterval.Day, retainedFileCountLimit: 30);
+        Log.Logger = configuration.CreateLogger();
+    }
 
-        /// <summary>
-        /// Initializes the singleton application object.  This is the first line of authored code
-        /// executed, and as such is the logical equivalent of main() or WinMain().
-        /// </summary>
-        public App()
-        {
-            InitializeComponent();
-            if (!string.IsNullOrEmpty(GlobalVars.ConfigurationService.Language))
-                ApplicationLanguages.PrimaryLanguageOverride = GlobalVars.ConfigurationService.Language;
-            else if (GlobalizationPreferences.Languages.Count > 0 && ApplicationLanguages.Languages.Contains(GlobalizationPreferences.Languages[0]))
-                ApplicationLanguages.PrimaryLanguageOverride = GlobalizationPreferences.Languages[0];
-            else
-                ApplicationLanguages.PrimaryLanguageOverride = "en-US";
-        }
-
-        /// <summary>
-        /// Invoked when the application is launched.
-        /// </summary>
-        /// <param name="args">Details about the launch request and process.</param>
-        protected override void OnLaunched(Microsoft.UI.Xaml.LaunchActivatedEventArgs args)
-        {
-            _window = new MainWindow();
-            _window.Activate();
-        }
+    /// <summary>
+    /// Invoked when the application is launched.
+    /// </summary>
+    /// <param name="args">Details about the launch request and process.</param>
+    protected override void OnLaunched(Microsoft.UI.Xaml.LaunchActivatedEventArgs args)
+    {
+        _window = new MainWindow();
+        _window.Activate();
     }
 }
