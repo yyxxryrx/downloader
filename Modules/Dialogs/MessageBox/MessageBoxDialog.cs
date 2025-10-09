@@ -8,14 +8,13 @@ namespace Downloader.Modules.Dialogs.MessageBox;
 
 public class MessageBoxDialog()
 {
-    public required XamlRoot XamlRoot;
     public string Message = string.Empty;
     public string Caption = string.Empty;
     public string SubTitle = string.Empty;
     public MessageIconType Icon = MessageIconType.None;
     public MessageButtonType Button = MessageButtonType.Ok;
 
-    public async Task<ContentDialogResult> ShowAsync()
+    public async Task ShowAsync()
     {
         var message = string.Join('\n', from line in Message.Split('\n') select line.TrimEnd()); 
         var content = new MessageBoxDialogContent
@@ -26,7 +25,7 @@ public class MessageBoxDialog()
         };
         var dialog = new ContentDialog
         {
-            XamlRoot = XamlRoot,
+            XamlRoot = App.CurrentWindow!.Content.XamlRoot,
             Title = Caption,
             Content = content
         };
@@ -44,7 +43,8 @@ public class MessageBoxDialog()
             default:
                 throw new ArgumentOutOfRangeException(nameof(Button), Button, null);
         }
-        return await dialog.ShowAsync();
+
+        await dialog.ShowAsync();
     }
 }
 

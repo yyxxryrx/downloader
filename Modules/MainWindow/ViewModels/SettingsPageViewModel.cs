@@ -30,7 +30,7 @@ public partial class SettingsPageViewModel : ObservableObject
         { "中文（简体）", "zh-CN" }
     };
 
-    public List<DownloadPathMode> DownloadPathModes =
+    public List<DownloadPathMode> DownloadPathModes { get; } =
     [
         DownloadPathMode.Default,
         DownloadPathMode.Custom
@@ -103,15 +103,16 @@ public partial class SettingsPageViewModel : ObservableObject
         }
         catch (Exception e)
         {
-            Log.Error(e, "Save path error");
+            Log.Error(e, "Save path error: {Err}", e);
             var messageBox = new MessageBoxDialog
             {
-                XamlRoot = XamlRoot,
+                Caption = "Error",
                 Message = e.Message,
                 Icon = MessageIconType.Error,
                 Button = MessageButtonType.Ok
             };
             await messageBox.ShowAsync();
+            Path = GlobalVars.ConfigurationService.DownloadPath;
         }
     }
 
