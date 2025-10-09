@@ -61,7 +61,6 @@
                     <Border Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
                             BorderBrush="{StaticResource CardStrokeColorDefaultBrush}"
                             CornerRadius="{ThemeResource OverlayCornerRadius}"
-                            Height="55"
                             Padding="8"
                             Margin="0,6"
                             Translation="0,0,16">
@@ -93,8 +92,10 @@
                                     <RowDefinition Height="Auto" />
                                 </Grid.RowDefinitions>
                                 <TextBlock Grid.Row="0"
+                                           Margin="0,2"
                                            Text="{x:Bind Message}" />
                                 <TextBlock Grid.Row="1"
+                                           Margin="0,2"
                                            Text="{x:Bind Timestamp}"
                                            Foreground="{StaticResource TextFillColorTertiaryBrush}"
                                            Style="{StaticResource CaptionTextBlockStyle}" />
