@@ -13,29 +13,67 @@ using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Downloader.Modules.MainWindow.ViewModels;
+using Microsoft.Windows.ApplicationModel.Resources;
+using Serilog;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
 
-namespace Downloader.Modules.MainWindow.Views
-{
-    /// <summary>
-    /// An empty page that can be used on its own or navigated to within a Frame.
-    /// </summary>
-    public sealed partial class SettingsPage : Page
-    {
-        public SettingsPageViewModel ViewModel => (DataContext as SettingsPageViewModel)!;
-        public SettingsPage()
-        {
-            InitializeComponent();
-            DataContext = new SettingsPageViewModel();
-        }
+namespace Downloader.Modules.MainWindow.Views;
 
-        private void Language_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
+/// <summary>
+/// An empty page that can be used on its own or navigated to within a Frame.
+/// </summary>
+public sealed partial class SettingsPage : Page
+{
+    public SettingsPageViewModel ViewModel => (DataContext as SettingsPageViewModel)!;
+
+    public SettingsPage()
+    {
+        InitializeComponent();
+        DataContext = new SettingsPageViewModel(XamlRoot);
+    }
+
+    private void Language_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
+    {
+        if (e.RemovedItems.Count == 0) return;
+        ViewModel.LanguageSelectChanged();
+        InfoBar1.IsOpen = true;
+    }
+
+    private async void PathTextBox_OnLostFocus(object sender, RoutedEventArgs e)
+    {
+        var textBox = (sender as TextBox)!;
+        Log.Debug("TextBox Lost Focus with value: {Text}", textBox.Text);
+        ViewModel.Path = textBox.Text;
+        await ViewModel.SavePath();
+    }
+
+    private async void DownloadPathMode_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
+    {
+        await ViewModel.DownloadPathModeChanged();
+    }
+}
+
+public class EnumConvertToString : IValueConverter
+{
+    private ResourceLoader Loader { get; } = new();
+
+    public object Convert(object value, Type targetType, object parameter, string language)
+    {
+        if (value is not Enum enumValue) return "";
+        try
         {
-            if (e.RemovedItems.Count == 0) return;
-            ViewModel.LanguageSelectChanged();
-            InfoBar1.IsOpen = true;
+            return Loader.GetString(enumValue.ToString());
         }
+        catch
+        {
+            return "Not found";
+        }
+    }
+
+    public object ConvertBack(object value, Type targetType, object parameter, string language)
+    {
+        throw new NotImplementedException();
     }
 }

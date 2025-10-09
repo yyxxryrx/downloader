@@ -53,6 +53,8 @@ public partial class Downloader
 
     public void Init()
     {
+        if (!Directory.Exists(TargetPath))
+            throw new DirectoryNotFoundException($"The path: {TargetPath} is not found.");
         var handler = new HttpClientHandler
         {
             AllowAutoRedirect = true,
@@ -199,12 +201,14 @@ public partial class Downloader
         Delete();
     }
 
-    private async void OnChunkDownloadCompleted(ChunkDownloader sender)
+    private void OnChunkDownloadCompleted(ChunkDownloader sender)
     {
         UpdateInfo();
-        if (RunningChunks.Count > 1)
-            await Task.Delay(TimeSpan.FromSeconds(1));
-        DispatcherQueue.TryEnqueue(async void () => {
+        DispatcherQueue.TryEnqueue(async void () =>
+        {
+            sender.Status = DownloadStatus.Completed;
+            if (RunningChunks.Count > 1)
+                await Task.Delay(TimeSpan.FromSeconds(1));
             RunningChunks.Remove(sender);
             CompletedChunks.Add(sender);
             if (RunningChunks.Count != 0) return;

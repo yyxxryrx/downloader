@@ -219,4 +219,25 @@
   <data name="CopyThisLine.Text" xml:space="preserve">
     <value>Copy this line</value>
   </data>
+  <data name="Default" xml:space="preserve">
+    <value>Default</value>
+  </data>
+  <data name="Custom" xml:space="preserve">
+    <value>Custom</value>
+  </data>
+  <data name="DownloadPathSettingsExpander.Header" xml:space="preserve">
+    <value>Download Path</value>
+  </data>
+  <data name="DownloadPathSettingsExpander.Description" xml:space="preserve">
+    <value>The path where downloaded files will be saved.</value>
+  </data>
+  <data name="DownloadPathSettingsCard.Header" xml:space="preserve">
+    <value>Saved Path</value>
+  </data>
+  <data name="DownloadPathSettingsCard.Description" xml:space="preserve">
+    <value>Setting saved path</value>
+  </data>
+  <data name="DownloadLabel.Text" xml:space="preserve">
+    <value>Download</value>
+  </data>
 </root>

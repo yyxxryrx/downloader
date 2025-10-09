@@ -63,6 +63,7 @@ public partial class MainPageViewModel : ObservableObject
                 AllowRange = response.Headers.TryGetValues("Accept-Ranges", out var values) &&
                              values.Any(i => string.Equals(i, "bytes", StringComparison.OrdinalIgnoreCase));
             }
+
             Log.Information("File info, name: {Filename}, url: {Url}", FileName, uri);
         }
         catch (Exception ex)
@@ -122,18 +123,26 @@ public partial class MainPageViewModel : ObservableObject
     {
         if (Url is null) return;
         Log.Information("Download {Filename} start, url: {Url}", FileName, Url);
-        var downloader = new Modules.ViewModels.Downloader
+        try
         {
-            FileName = FileName,
-            TargetPath = "D:/Downloads/abcd",
-            Url = Url,
-            TotalSize = FileSize,
-            AllowRange = AllowRange,
-            ThreadCount = GlobalVars.ConfigurationService.ThreadCount
-        };
-        Log.Debug("Downloader: {@Downloader}", downloader);
-        downloader.Init();
-        GlobalVars.Downloaders.Add(downloader);
+            var downloader = new Modules.ViewModels.Downloader
+            {
+                FileName = FileName,
+                TargetPath = GlobalVars.ConfigurationService.DownloadPath,
+                Url = Url,
+                TotalSize = FileSize,
+                AllowRange = AllowRange,
+                ThreadCount = GlobalVars.ConfigurationService.ThreadCount
+            };
+            Log.Debug("Downloader: {@Downloader}", downloader);
+            downloader.Init();
+            GlobalVars.Downloaders.Add(downloader);
+        }
+        catch (Exception ex)
+        {
+            Log.Error(ex, "New download error");
+        }
+
         CloseWindow?.Invoke();
     }
 }

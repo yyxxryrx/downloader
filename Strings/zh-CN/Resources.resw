@@ -253,4 +253,32 @@
     <value>复制此行</value>
     <comment>Copy this line</comment>
   </data>
+  <data name="Default" xml:space="preserve">
+    <value>默认</value>
+    <comment>Default</comment>
+  </data>
+  <data name="Custom" xml:space="preserve">
+    <value>自定义</value>
+    <comment>Custom</comment>
+  </data>
+  <data name="DownloadPathSettingsExpander.Header" xml:space="preserve">
+    <value>下载路径</value>
+    <comment>The header of download path settings expander</comment>
+  </data>
+  <data name="DownloadPathSettingsExpander.Description" xml:space="preserve">
+    <value>下载的文件将被保存到的位置</value>
+    <comment>The Description of DownloadPathSettingsExpander</comment>
+  </data>
+  <data name="DownloadPathSettingsCard.Header" xml:space="preserve">
+    <value>设置路径</value>
+    <comment>The header of DownloadPathSettingsCard</comment>
+  </data>
+  <data name="DownloadPathSettingsCard.Description" xml:space="preserve">
+    <value>设置保存路径</value>
+    <comment>The Description of DownloadPathSettingsCard</comment>
+  </data>
+  <data name="DownloadLabel.Text" xml:space="preserve">
+    <value>下载</value>
+    <comment>The text of DownloadLabel</comment>
+  </data>
 </root>

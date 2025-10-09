@@ -13,6 +13,9 @@
     <None Update="MainWindow.xaml">
       <SubType>Designer</SubType>
     </None>
+    <Page Update="Modules\Dialogs\MessageBox\MessageBoxDialogContent.xaml">
+      <SubType>Designer</SubType>
+    </Page>
     <Page Update="Modules\MainWindow\Views\LoggingPage.xaml">
       <SubType>Designer</SubType>
     </Page>

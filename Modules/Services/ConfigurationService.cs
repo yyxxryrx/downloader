@@ -14,6 +14,18 @@ public class ConfigurationService
         set => Set("Language", value);
     }
     
+    public string DownloadPath
+    {
+        get => Get("DownloadPath", string.Empty);
+        set => Set("DownloadPath", value);
+    }
+    
+    public string DownloadPathMode
+    {
+        get => Get("DownloadPathMode", "Default");
+        set => Set("DownloadPathMode", value);
+    }
+    
     public int ThreadCount
     {
         get => Get("ThreadCount", 8);

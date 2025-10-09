@@ -15,6 +15,7 @@
   <ItemGroup>
     <None Remove="Modules\AskWindow\AskWindow.xaml" />
     <None Remove="Modules\AskWindow\Views\MainPage.xaml" />
+    <None Remove="Modules\Dialogs\MessageBox\MessageBoxDialogContent.xaml" />
     <None Remove="Modules\MainWindow\Controls\DisplayOneLog.xaml" />
     <None Remove="Modules\MainWindow\Views\DownloadingPage.xaml" />
     <None Remove="Modules\MainWindow\Views\HistoryPage.xaml" />
@@ -79,6 +80,14 @@
   </ItemGroup>
   <ItemGroup>
     <Page Update="Modules\AskWindow\Views\MainPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Remove="Modules\Dialogs\MessageBox\MessageBoxDialogContent.xaml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="Modules\Dialogs\MessageBox\MessageBoxDialogContent.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>

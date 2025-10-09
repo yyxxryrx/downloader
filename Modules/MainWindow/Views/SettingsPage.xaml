@@ -8,10 +8,15 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:controls="using:CommunityToolkit.WinUI.Controls"
+    xmlns:viewModels="using:Downloader.Modules.MainWindow.ViewModels"
     mc:Ignorable="d">
 
+    <Page.Resources>
+        <local:EnumConvertToString x:Name="EnumConvertToString" />
+    </Page.Resources>
+
     <Grid Margin="36">
-        <StackPanel Spacing="12">
+        <StackPanel Spacing="16">
             <StackPanel Spacing="4">
                 <TextBlock x:Uid="LanguageLabel"
                            Style="{StaticResource BodyStrongTextBlockStyle}" />
@@ -29,8 +34,46 @@
                 </controls:SettingsCard>
             </StackPanel>
             <StackPanel Spacing="4">
-                <TextBlock Text="Thread count"
+                <TextBlock x:Uid="DownloadLabel"
                            Style="{StaticResource BodyStrongTextBlockStyle}" />
+                <controls:SettingsExpander x:Uid="DownloadPathSettingsExpander">
+                    <controls:SettingsExpander.HeaderIcon>
+                        <FontIcon Glyph="&#xE74E;" />
+                    </controls:SettingsExpander.HeaderIcon>
+                    <controls:SettingsExpander.Items>
+                        <controls:SettingsCard x:Uid="DownloadPathSettingsCard"
+                                               IsEnabled="{x:Bind ViewModel.DownloadPathModeIsCustom,Mode=OneWay}">
+                            <controls:SettingsCard.HeaderIcon>
+                                <FontIcon Glyph="&#xE792;" />
+                            </controls:SettingsCard.HeaderIcon>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+                                <TextBox Grid.Column="0"
+                                         Margin="2,0"
+                                         LostFocus="PathTextBox_OnLostFocus"
+                                         Text="{x:Bind ViewModel.Path,Mode=TwoWay}" />
+                                <Button Grid.Column="1"
+                                        Content="..."
+                                        x:Name="OpenPicker"
+                                        Margin="2,0"
+                                        Command="{x:Bind ViewModel.OpenDirectoryPickerCommand}"
+                                        CommandParameter="{x:Bind OpenPicker}" />
+                            </Grid>
+                        </controls:SettingsCard>
+                    </controls:SettingsExpander.Items>
+                    <ComboBox ItemsSource="{x:Bind ViewModel.DownloadPathModes}"
+                              SelectedItem="{x:Bind ViewModel.DownloadPathMode,Mode=TwoWay}"
+                              SelectionChanged="DownloadPathMode_OnSelectionChanged">
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate x:DataType="viewModels:DownloadPathMode">
+                                <TextBlock Text="{x:Bind Converter={StaticResource EnumConvertToString}}" />
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
+                    </ComboBox>
+                </controls:SettingsExpander>
                 <controls:SettingsExpander Header="Thread Count"
                                            Description="The number of threads to use for downloading.">
                     <controls:SettingsExpander.HeaderIcon>

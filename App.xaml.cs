@@ -18,6 +18,8 @@ using Windows.Foundation.Collections;
 using Windows.Globalization;
 using Windows.System.UserProfile;
 using Downloader.Modules;
+using Downloader.Modules.Services;
+using Downloader.Modules.Utils;
 using Serilog;
 using ApplicationLanguages = Microsoft.Windows.Globalization.ApplicationLanguages;
 
@@ -50,13 +52,19 @@ public partial class App : Application
         var configuration = new LoggerConfiguration();
         configuration
 #if !DEBUG
-        .MinimumLevel.Information()
+            .MinimumLevel.Information()
+#else
+            .MinimumLevel.Debug()
 #endif
             .WriteTo.Console()
             .WriteTo.Sink(GlobalVars.UiSink)
             .WriteTo.File("logs/log-.txt", rollingInterval: RollingInterval.Day, retainedFileCountLimit: 30);
         Log.Logger = configuration.CreateLogger();
         Log.Information("Program started");
+
+        if (string.IsNullOrEmpty(GlobalVars.ConfigurationService.DownloadPath) &&
+            GetDownloadFolderPath.GetPath() is { } path)
+            GlobalVars.ConfigurationService.DownloadPath = path;
     }
 
     /// <summary>

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Page
+    x:Class="Downloader.Modules.Dialogs.MessageBox.MessageBoxDialogContent"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Downloader.Modules.Dialogs.MessageBox"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <Grid Loaded="FrameworkElement_OnLoaded" x:Name="Grid1">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"></ColumnDefinition>
+            <ColumnDefinition Width="*"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+        </Grid.RowDefinitions>
+        <TextBlock FontWeight="Bold"
+                   FontSize="16"
+                   Margin="0,0,0,12"
+                   x:Name="SubTitleBlock">
+        </TextBlock>
+        <FontIcon Grid.Row="1" Grid.Column="0" x:Name="FontIcon1"
+                  VerticalAlignment="Stretch"
+                  Margin="4,0,6,0"
+                  FontSize="24">
+        </FontIcon>
+        <ScrollView Grid.Row="1"
+                    Grid.Column="1"
+                    HorizontalScrollMode="Auto"
+                    HorizontalScrollBarVisibility="Auto"
+                    VerticalScrollMode="Auto"
+                    VerticalScrollBarVisibility="Auto">
+            <TextBlock VerticalAlignment="Center"
+                       HorizontalAlignment="Left"
+                       TextWrapping="WrapWholeWords"
+                       x:Name="TextBlock1">
+            </TextBlock>
+        </ScrollView>
+    </Grid>
+</Page>

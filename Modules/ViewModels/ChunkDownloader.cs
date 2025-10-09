@@ -115,7 +115,6 @@ public partial class ChunkDownloader(HttpClient client) : ObservableObject
             return;
         }
 
-        Status = DownloadStatus.Completed;
         OnDownloadCompleted?.Invoke(this);
     }
 
