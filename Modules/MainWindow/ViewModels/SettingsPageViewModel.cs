@@ -44,11 +44,9 @@ public partial class SettingsPageViewModel : ObservableObject
 
     public bool DownloadPathModeIsCustom => DownloadPathMode is DownloadPathMode.Custom;
 
-    private XamlRoot XamlRoot { get; }
 
-    public SettingsPageViewModel(XamlRoot xamlRoot)
+    public SettingsPageViewModel()
     {
-        XamlRoot = xamlRoot;
         CurrentLanguage = Language.Reverse[GlobalVars.ConfigurationService.Language];
         DownloadPathMode = Enum.Parse<DownloadPathMode>(GlobalVars.ConfigurationService.DownloadPathMode);
         Path = GlobalVars.ConfigurationService.DownloadPath;

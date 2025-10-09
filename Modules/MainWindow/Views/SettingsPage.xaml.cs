@@ -31,7 +31,7 @@ public sealed partial class SettingsPage : Page
     public SettingsPage()
     {
         InitializeComponent();
-        DataContext = new SettingsPageViewModel(XamlRoot);
+        DataContext = new SettingsPageViewModel();
     }
 
     private void Language_OnSelectionChanged(object sender, SelectionChangedEventArgs e)

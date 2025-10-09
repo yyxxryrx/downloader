@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <Page
     x:Class="Downloader.Modules.MainWindow.Views.HistoryPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
@@ -6,9 +7,49 @@
     xmlns:local="using:Downloader.Modules.MainWindow.Views"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:dataGird="using:Syncfusion.UI.Xaml.DataGrid"
+    xmlns:globals="using:Downloader.Modules"
     mc:Ignorable="d">
 
-    <Grid>
+    <Page.Resources>
+        <local:FileSizeFormater x:Name="FileSizeFormater" />
+    </Page.Resources>
 
+    <Grid Margin="36">
+        <dataGird:SfDataGrid x:Name="HistoryGrid"
+                             AutoGenerateColumns="False"
+                             ColumnWidthMode="None"
+                             GridLinesVisibility="Horizontal"
+                             HeaderLinesVisibility="Both"
+                             HorizontalAlignment="Stretch"
+                             ShowGroupDropArea="False"
+                             AllowFiltering="True"
+                             AllowSorting="True"
+                             AllowResizingColumns="True"
+                             ItemsSource="{x:Bind globals:GlobalVars.HistoryManagerService.HistoryEntries,Mode=OneWay}">
+            <dataGird:SfDataGrid.Columns>
+                <dataGird:GridNumericColumn Width="60"
+                                            HeaderText="ID"
+                                            MappingName="Id"
+                                            AllowFiltering="False" />
+                <dataGird:GridTextColumn ColumnWidthMode="Star"
+                                         HeaderText="Filename"
+                                         MappingName="Filename"
+                                         TextWrapping="NoWrap"
+                                         TextTrimming="CharacterEllipsis" />
+                <dataGird:GridTextColumn ColumnWidthMode="Star"
+                                         HeaderText="URL"
+                                         MappingName="Url"
+                                         TextWrapping="NoWrap"
+                                         TextTrimming="CharacterEllipsis" />
+                <dataGird:GridTextColumn Width="180"
+                                         HeaderText="Time"
+                                         MappingName="DateTime" />
+                <dataGird:GridNumericColumn Width="100"
+                                            HeaderText="Size"
+                                            MappingName="FileSize"
+                                            NumberFormatter="{StaticResource FileSizeFormater}" />
+            </dataGird:SfDataGrid.Columns>
+        </dataGird:SfDataGrid>
     </Grid>
 </Page>

@@ -2,7 +2,18 @@
 
 namespace Downloader.Modules.Utils;
 
-public record UnitConvertResult(double Value, string Unit);
+public record UnitConvertResult(double Value, string Unit)
+{
+    public override string ToString()
+    {
+        return $"{Value} {Unit}";
+    }
+    
+    public string ToStringF2()
+    {
+        return $"{Value:F2} {Unit}";
+    }
+};
 
 public class UnitConverter
 {

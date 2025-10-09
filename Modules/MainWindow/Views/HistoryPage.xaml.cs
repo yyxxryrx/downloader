@@ -12,20 +12,40 @@ using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.Globalization.NumberFormatting;
+using Downloader.Modules.Utils;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
 
-namespace Downloader.Modules.MainWindow.Views
+namespace Downloader.Modules.MainWindow.Views;
+
+/// <summary>
+/// An empty page that can be used on its own or navigated to within a Frame.
+/// </summary>
+public sealed partial class HistoryPage : Page
 {
-    /// <summary>
-    /// An empty page that can be used on its own or navigated to within a Frame.
-    /// </summary>
-    public sealed partial class HistoryPage : Page
+    public HistoryPage()
     {
-        public HistoryPage()
-        {
-            InitializeComponent();
-        }
+        InitializeComponent();
+        DispatcherQueue.TryEnqueue(async void () => { await GlobalVars.HistoryManagerService.Initialize(); });
+    }
+}
+
+public class FileSizeFormater : INumberFormatter
+{
+    public string Format(long value)
+    {
+        return FilesizeConverters.iB.Convert(value).ToStringF2();
+    }
+
+    public string Format(ulong value)
+    {
+        return FilesizeConverters.iB.Convert((long)value).ToStringF2();
+    }
+
+    public string Format(double value)
+    {
+        return FilesizeConverters.iB.Convert((long)value).ToStringF2();
     }
 }

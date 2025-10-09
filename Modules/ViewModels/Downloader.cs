@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 using System.Timers;
 using CommunityToolkit.Mvvm.Input;
 using Downloader.Modules.Models;
+using Downloader.Modules.Services;
 using Microsoft.UI.Dispatching;
 
 namespace Downloader.Modules.ViewModels;
@@ -219,6 +220,14 @@ public partial class Downloader
             await RemoveTempFile();
             Progress = 100;
             Status = DownloadStatus.Completed;
+            await GlobalVars.HistoryManagerService.Add(new HistoryEntry
+            {
+                Status = Status,
+                DateTime = DateTime.Now,
+                Filename = FileName,
+                Url = Url.AbsoluteUri,
+                FileSize = TotalSize!.Value
+            });
             await Task.Delay(TimeSpan.FromSeconds(3));
             GlobalVars.Downloaders.Remove(this);
         });

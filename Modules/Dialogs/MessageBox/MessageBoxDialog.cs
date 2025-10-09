@@ -6,7 +6,7 @@ using Microsoft.UI.Xaml.Controls;
 
 namespace Downloader.Modules.Dialogs.MessageBox;
 
-public class MessageBoxDialog()
+public class MessageBoxDialog
 {
     public string Message = string.Empty;
     public string Caption = string.Empty;

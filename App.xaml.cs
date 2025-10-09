@@ -42,6 +42,7 @@ public partial class App : Application
     public App()
     {
         InitializeComponent();
+        Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense("Ngo9BigBOggjHTQxAR8/V1JFaF5cXGRCf1NpRGVGfV5ycUVPal1UTndWUiweQnxTdEBiWX9XcH1UQ2FVWUN2W0leYg==");
         if (!string.IsNullOrEmpty(GlobalVars.ConfigurationService.Language))
             ApplicationLanguages.PrimaryLanguageOverride = GlobalVars.ConfigurationService.Language;
         else if (GlobalizationPreferences.Languages.Count > 0 &&
